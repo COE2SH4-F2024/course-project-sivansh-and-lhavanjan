@@ -13,8 +13,9 @@ class objPosArrayList
         int arrayCapacity;
 
     public:
-        objPosArrayList();
-        ~objPosArrayList();
+        objPosArrayList(); // Default constructor
+        objPosArrayList(const objPosArrayList &slist); // Copy constructor
+        ~objPosArrayList(); // Destructor
 
         int getSize() const;
         void insertHead(objPos thisPos);
