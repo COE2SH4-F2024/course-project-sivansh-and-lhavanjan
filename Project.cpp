@@ -73,7 +73,24 @@ void RunLogic(void)
     if(input == '+')
     {
         myGM->incrementScore();
-        // MacUILib_printf("Debug: Score incremented. Current Score: %d\n", myGM->getScore());
+    }
+
+    if(input == '>')
+    {
+        myGM->setSpeed(myGM->getSpeed() + 1);
+        myPlayer->speedControl();
+    }
+
+    if(input == '<')
+    {
+        myGM->setSpeed(myGM->getSpeed() - 1);
+        myPlayer->speedControl();
+    }
+
+    if(input == 'R' || input == 'r')
+    {
+        myFood->generateFood(myPlayer->getPlayerPos());
+        MacUILib_printf("Debug: Food generated at [%d, %d]\n", myFood->getFoodPos().pos->x, myFood->getFoodPos().pos->y);
     }
 
     if(input == '-')
@@ -84,15 +101,10 @@ void RunLogic(void)
         return;
     }
 
-    if(input == 'R' || input == 'r')
-    {
-        myFood->generateFood(myPlayer->getPlayerPos());
-        MacUILib_printf("Debug: Food generated at [%d, %d]\n", myFood->getFoodPos().pos->x, myFood->getFoodPos().pos->y);
-    }
-
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
-    if(input == 0 || input == '$' || input == '+' || input == '-' || input == 'R' || input == 'r')
+    
+    if(input == 0 || input == '$' || input == '+' || input == 'R' || input == 'r' || input == '>' || input == '<' || input == '-')
     {
         myGM->clearInput();
     }
@@ -134,11 +146,12 @@ void DrawScreen(void)
 
     MacUILib_printf("Debug: Score incremented. Current Score: %d\n", myGM->getScore());
     MacUILib_printf("Debug: Food generated at [%d, %d]\n", myFood->getFoodPos().pos->x, myFood->getFoodPos().pos->y);
+    MacUILib_printf("Speed: %d, Delay: %d", myGM->getSpeed(), myGM->getDelayAmount());
 }
 
 void LoopDelay(void)
 {
-    MacUILib_Delay(DELAY_CONST); // 0.1s delay
+    MacUILib_Delay(myGM->getDelayAmount()); // 0.1s delay
 }
 
 

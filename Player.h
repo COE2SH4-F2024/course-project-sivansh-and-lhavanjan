@@ -25,6 +25,7 @@ class Player
         void movePlayer();
 
         // More methods to be added here
+        void speedControl();
 
     private:
         objPos playerPos; // Upgrade this in iteration 3.       

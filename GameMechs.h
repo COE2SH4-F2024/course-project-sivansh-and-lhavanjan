@@ -22,6 +22,9 @@ class GameMechs
 
         objPos food;
 
+        int speed = 3;
+        int delayAmount = 100000;
+
     public:
         GameMechs();
         GameMechs(int boardX, int boardY);
@@ -43,6 +46,10 @@ class GameMechs
         void incrementScore();
         
         // More methods should be added here
+        int getSpeed();
+        void setSpeed(int newSpeed);
+        int getDelayAmount();
+        void setDelayAmount(int amount);
 };
 
 #endif

@@ -108,3 +108,30 @@ void Player::movePlayer()
 }   
 
 // More methods to be added
+
+void Player::speedControl()
+{
+    switch(mainGameMechsRef->getSpeed())
+    {
+        case 1:
+            mainGameMechsRef->setDelayAmount(150000);
+            break;
+        case 2:
+            mainGameMechsRef->setDelayAmount(125000);
+            break;
+        case 3:
+            mainGameMechsRef->setDelayAmount(100000);
+            break;
+        case 4:
+            mainGameMechsRef->setDelayAmount(75000);
+            break;
+        case 5:
+            mainGameMechsRef->setDelayAmount(50000);
+            break;
+        default:
+            mainGameMechsRef->setDelayAmount(100000);
+            break;
+    }
+
+    MacUILib_printf("Speed: %d, Delay: %d", mainGameMechsRef->getSpeed(), mainGameMechsRef->getDelayAmount());
+}

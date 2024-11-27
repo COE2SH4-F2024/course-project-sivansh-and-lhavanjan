@@ -91,3 +91,22 @@ void GameMechs::clearInput()
 }
 
 // More methods should be added here
+int GameMechs::getSpeed()
+{
+    return speed;
+}
+void GameMechs::setSpeed(int newSpeed)
+{
+    if(newSpeed >= 1 && newSpeed <= 5)
+    {
+        speed = newSpeed;
+    }
+}
+int GameMechs::getDelayAmount()
+{
+    return delayAmount;
+}
+void GameMechs::setDelayAmount(int amount)
+{
+    delayAmount = amount;
+}
