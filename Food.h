@@ -22,7 +22,6 @@ class Food
 
         void generateFood(objPos blockOff);
         objPos getFoodPos() const;
-
 };
 
 #endif

@@ -50,6 +50,8 @@ void Initialize(void)
     myGM = new GameMechs();
     myPlayer = new Player(myGM);
     myFood = new Food();
+
+    myFood->generateFood(myPlayer->getPlayerPos());
 }
 
 void GetInput(void)
@@ -81,9 +83,16 @@ void RunLogic(void)
         MacUILib_printf("Debug: Lose flag triggered.");
         return;
     }
+
+    if(input == 'R' || input == 'r')
+    {
+        myFood->generateFood(myPlayer->getPlayerPos());
+        MacUILib_printf("Debug: Food generated at [%d, %d]\n", myFood->getFoodPos().pos->x, myFood->getFoodPos().pos->y);
+    }
+
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
-    if(input == 0 || input == '$' || input == '+')
+    if(input == 0 || input == '$' || input == '+' || input == '-' || input == 'R' || input == 'r')
     {
         myGM->clearInput();
     }
@@ -106,18 +115,7 @@ void DrawScreen(void)
                 MacUILib_printf("#");
             else
             {
-                objPos charA(5, 3, 'A');
-                objPos charB(8, 6, 'B');
-
-                if (x == charA.pos->x && y == charA.pos->y)
-                {
-                    MacUILib_printf("%c", charA.getSymbol());
-                }
-                else if (x == charB.pos->x && y == charB.pos->y)
-                {
-                    MacUILib_printf("%c", charB.getSymbol());
-                }
-                else if (x == playerPos.pos->x && y == playerPos.pos->y)
+                if (x == playerPos.pos->x && y == playerPos.pos->y)
                 {
                     MacUILib_printf("%c", playerPos.getSymbol());
                 }
@@ -135,6 +133,7 @@ void DrawScreen(void)
     }
 
     MacUILib_printf("Debug: Score incremented. Current Score: %d\n", myGM->getScore());
+    MacUILib_printf("Debug: Food generated at [%d, %d]\n", myFood->getFoodPos().pos->x, myFood->getFoodPos().pos->y);
 }
 
 void LoopDelay(void)
@@ -161,8 +160,10 @@ void CleanUp(void)
     }
 
     MacUILib_printf("Final Score: %d\n", myGM->getScore());
+    
     delete myPlayer;
-    delete myGM; 
+    delete myGM;
+    delete myFood; 
 
     MacUILib_uninit();
 }
