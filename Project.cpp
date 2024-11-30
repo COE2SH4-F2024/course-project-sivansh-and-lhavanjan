@@ -48,10 +48,11 @@ void Initialize(void)
     MacUILib_clearScreen();
 
     myGM = new GameMechs();
-    myPlayer = new Player(myGM);
+    // myPlayer = new Player(myGM);
+    myPlayer = new Player(myGM, 1);
     myFood = new Food();
 
-    myFood->generateFood(myPlayer->getPlayerPos());
+    // myFood->generateFood(myPlayer->getPlayerPos());
 }
 
 void GetInput(void)
@@ -87,11 +88,11 @@ void RunLogic(void)
         myPlayer->speedControl();
     }
 
-    if(input == 'R' || input == 'r')
+    /* if(input == 'R' || input == 'r')
     {
         myFood->generateFood(myPlayer->getPlayerPos());
         MacUILib_printf("Debug: Food generated at [%d, %d]\n", myFood->getFoodPos().pos->x, myFood->getFoodPos().pos->y);
-    }
+    } */
 
     if(input == '-')
     {
@@ -114,12 +115,13 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen();
 
-    objPos playerPos = myPlayer->getPlayerPos();
+    // objPos playerPos = myPlayer->getPlayerPos();
+    objPosArrayList* snakeBody = myPlayer->getPlayerPos();
     objPos foodPosition = myFood->getFoodPos();
 
-    MacUILib_printf("Player [x, y, symbol] = [%d, %d, %c]\n", playerPos.pos->x, playerPos.pos->y, playerPos.symbol);
+    // MacUILib_printf("Player [x, y, symbol] = [%d, %d, %c]\n", playerPos.pos->x, playerPos.pos->y, playerPos.symbol);
 
-    for (int y = 0; y < height; y++)
+    /* for (int y = 0; y < height; y++)
     {
         for (int x = 0; x < width; ++x)
         {
@@ -142,7 +144,43 @@ void DrawScreen(void)
             }
         }
         MacUILib_printf("\n");
-    }
+    } */
+
+   for(int y = 0; y < height; y++)
+   {
+        for(int x = 0; x < width; x++)
+        {
+            bool isSnakeBody = false;
+
+            for(int i = 0; i < snakeBody->getSize(); i++)
+            {
+                if(snakeBody->getElement(i).pos->x == x && snakeBody->getElement(i).pos->y == y)
+                {
+                    MacUILib_printf("%c", snakeBody->getElement(i).getSymbol());
+                    isSnakeBody = true;
+                    break;
+                }
+            }
+
+            if(!isSnakeBody)
+            {
+                if(y == 0 || y == height - 1 || x == 0 || x == width - 1)
+                {
+                    MacUILib_printf("#");
+                }
+                else if (x == foodPosition.pos->x && y == foodPosition.pos->y)
+                {
+                    
+                    MacUILib_printf("%c", foodPosition.getSymbol());
+                }
+                else
+                {
+                    MacUILib_printf(" ");
+                }
+            }
+        }
+        MacUILib_printf("\n");
+   }
 
     MacUILib_printf("Debug: Score incremented. Current Score: %d\n", myGM->getScore());
     MacUILib_printf("Debug: Food generated at [%d, %d]\n", myFood->getFoodPos().pos->x, myFood->getFoodPos().pos->y);
