@@ -49,7 +49,7 @@ void Initialize(void)
 
     myGM = new GameMechs();
     // myPlayer = new Player(myGM);
-    myPlayer = new Player(myGM, 1);
+    myPlayer = new Player(myGM, 3);
     myFood = new Food();
 
     // myFood->generateFood(myPlayer->getPlayerPos());
