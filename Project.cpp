@@ -26,7 +26,7 @@ void CleanUp(void);
 
 int main(void)
 {
-
+    srand(time(0));
     Initialize();
 
     while(myGM->getExitFlagStatus() == false)  
@@ -47,12 +47,13 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
+
     myGM = new GameMechs();
     // myPlayer = new Player(myGM);
-    myPlayer = new Player(myGM, 3);
     myFood = new Food();
+    myPlayer = new Player(myGM, myFood, 1);
 
-    // myFood->generateFood(myPlayer->getPlayerPos());
+    myFood->generateFood(myPlayer->getPlayerPos());
 }
 
 void GetInput(void)
@@ -184,7 +185,7 @@ void DrawScreen(void)
 
     MacUILib_printf("Debug: Score incremented. Current Score: %d\n", myGM->getScore());
     MacUILib_printf("Debug: Food generated at [%d, %d]\n", myFood->getFoodPos().pos->x, myFood->getFoodPos().pos->y);
-    MacUILib_printf("Speed: %d, Delay: %d", myGM->getSpeed(), myGM->getDelayAmount());
+    MacUILib_printf("Speed: %d, Delay: %d\n", myGM->getSpeed(), myGM->getDelayAmount());
 }
 
 void LoopDelay(void)

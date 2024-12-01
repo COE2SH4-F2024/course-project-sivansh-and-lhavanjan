@@ -15,12 +15,11 @@ class Food
 {
     private:
         objPos foodPos;
-
     public:
         Food();
         ~Food();
 
-        void generateFood(objPos blockOff);
+        void generateFood(objPosArrayList* snakeBody);
         objPos getFoodPos() const;
 };
 

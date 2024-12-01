@@ -3,35 +3,13 @@
 
 int hasInput = 0;
 
-/* Player::Player(GameMechs* thisGMRef)
+Player::Player(GameMechs* thisGMRef, Food* thisFoodRef, int initialLength)
 {
     mainGameMechsRef = thisGMRef;
+    foodRef = thisFoodRef;
     playerdirection = STOP;
 
     // more actions to be included
-    // playerPos.pos->x = mainGameMechsRef->getBoardSizeX() / 2;
-    // playerPos.pos->y = mainGameMechsRef->getBoardSizeY() / 2;
-    // playerPos.symbol = '@';
-
-    playerPosList = new objPosArrayList();
-
-    int startX = mainGameMechsRef->getBoardSizeX() / 2;
-    int startY = mainGameMechsRef->getBoardSizeY() / 2;
-
-    objPos headPosition(startX, startY, '*');
-
-    playerPosList->insertHead(headPosition);
-} */
-
-Player::Player(GameMechs* thisGMRef, int initialLength)
-{
-    mainGameMechsRef = thisGMRef;
-    playerdirection = STOP;
-
-    // more actions to be included
-    // playerPos.pos->x = mainGameMechsRef->getBoardSizeX() / 2;
-    // playerPos.pos->y = mainGameMechsRef->getBoardSizeY() / 2;
-    // playerPos.symbol = '@';
 
     playerPosList = new objPosArrayList();
 
@@ -40,12 +18,9 @@ Player::Player(GameMechs* thisGMRef, int initialLength)
 
     for(int i = 0; i < initialLength; i++)
     {
-        objPos segment(startX - i, startY, '*');
+        objPos segment(startX - i, startY, '@');
         playerPosList->insertHead(segment);
     }
-    // objPos headPosition(startX, startY, '*');
-
-    // playerPosList->insertHead(headPosition);
 }
 
 Player::~Player()
@@ -57,17 +32,10 @@ objPosArrayList* Player::getPlayerPos() const
 {
     return playerPosList;
 }
-/* objPos Player::getPlayerPos() const
-{
-    // return the reference to the playerPos arrray list
-    // return playerPos;
-    return playerPosList->getHeadElement();
-} */
 
 void Player::updatePlayerDir()
 {
     // PPA3 input processing logic 
-    // hasInput = 0;
     char input = mainGameMechsRef->getInput();
     if(input != 0)
     {
@@ -78,7 +46,7 @@ void Player::updatePlayerDir()
                 if(playerdirection != DOWN)
                 {
                     playerdirection = UP;
-                    MacUILib_printf("Player direction: UP");
+                    MacUILib_printf("Player direction: UP\n");
                     hasInput = 1;
                 }
                 break;
@@ -87,7 +55,7 @@ void Player::updatePlayerDir()
                 if(playerdirection != UP)
                 {
                     playerdirection = DOWN;
-                    MacUILib_printf("Player direction: DOWN");
+                    MacUILib_printf("Player direction: DOWN\n");
                     hasInput = 1;
                 }
                 break;
@@ -97,7 +65,7 @@ void Player::updatePlayerDir()
                 if(playerdirection != RIGHT)
                 {
                     playerdirection = LEFT;
-                    MacUILib_printf("Player direction: LEFT");
+                    MacUILib_printf("Player direction: LEFT\n");
                     hasInput = 1;
                 }
                 break;
@@ -106,7 +74,7 @@ void Player::updatePlayerDir()
                 if(playerdirection != LEFT)
                 {
                     playerdirection = RIGHT;
-                    MacUILib_printf("Player direction: RIGHT");
+                    MacUILib_printf("Player direction: RIGHT\n");
                     hasInput = 1;
                 }
                 break;
@@ -122,8 +90,6 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
-    /* int x = playerPos.pos->x;
-    int y = playerPos.pos->y; */
 
     int maxWidth = (mainGameMechsRef->getBoardSizeX() - 1);
     int maxHeight = (mainGameMechsRef->getBoardSizeY() - 1);
@@ -132,7 +98,7 @@ void Player::movePlayer()
     {
         int newX = playerPosList->getHeadElement().pos->x;
         int newY = playerPosList->getHeadElement().pos->y;
-
+    
         switch(playerdirection)
         {
             case UP:
@@ -164,26 +130,20 @@ void Player::movePlayer()
                 }
                 break;
         }
-        objPos newHeadPosition(newX, newY, '*');
-        playerPosList->insertHead(newHeadPosition);
-        playerPosList->removeTail();
 
-        /* switch(playerdirection)
+        objPos newHeadPosition(newX, newY, '@');
+        
+        if(checkFoodConsumption())
         {
-            case UP:
-                y = (y - 1 + mainGameMechsRef->getBoardSizeY()) % mainGameMechsRef->getBoardSizeY();
-                break;
-            case DOWN:
-                y = (y + 1) % mainGameMechsRef->getBoardSizeY();
-                break;
-            case LEFT:
-                x = (x - 1 + mainGameMechsRef->getBoardSizeX()) % mainGameMechsRef->getBoardSizeX();
-                break;
-            case RIGHT:
-                x = (x + 1) % mainGameMechsRef->getBoardSizeX();
-                break;
+            increasePlayerLength();
+            mainGameMechsRef->incrementScore();
+            foodRef->generateFood(playerPosList);
         }
-        playerPos.setObjPos(x, y, '@'); */
+        else
+        {
+            playerPosList->insertHead(newHeadPosition);
+            playerPosList->removeTail();
+        }
     }
 }   
 
@@ -214,4 +174,25 @@ void Player::speedControl()
     }
 
     MacUILib_printf("Speed: %d, Delay: %d", mainGameMechsRef->getSpeed(), mainGameMechsRef->getDelayAmount());
+}
+
+bool Player::checkFoodConsumption()
+{
+    objPos headPosition = playerPosList->getHeadElement();
+    objPos foodPosition = foodRef->getFoodPos();
+
+    if(headPosition.pos->x == foodPosition.pos->x && headPosition.pos->y == foodPosition.pos->y)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+void Player::increasePlayerLength()
+{
+    objPos headPosition = playerPosList->getHeadElement();
+
+    objPos newSegment(headPosition.pos->x, headPosition.pos->y, '@');
+    playerPosList->insertHead(newSegment);
 }

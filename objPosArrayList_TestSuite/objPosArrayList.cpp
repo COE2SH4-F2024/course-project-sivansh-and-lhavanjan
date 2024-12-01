@@ -46,7 +46,7 @@ void objPosArrayList::insertHead(objPos thisPos)
     if(listSize == arrayCapacity)
     {
         cout << "Array is full" << endl;
-        return;
+        resizeArray();
     }
 
     for(int i = listSize; i > 0; i--)
@@ -63,7 +63,7 @@ void objPosArrayList::insertTail(objPos thisPos)
     if(listSize == arrayCapacity)
     {
         cout << "Array is full" << endl;
-        return;
+        resizeArray();
     }
 
     aList[listSize] = thisPos;
@@ -110,4 +110,21 @@ objPos objPosArrayList::getTailElement() const
 objPos objPosArrayList::getElement(int index) const
 {
     return aList[index];
+}
+
+void objPosArrayList::resizeArray()
+{
+    int newCapacity = arrayCapacity * 2;
+
+    objPos* newArray = new objPos[newCapacity];
+
+    for(int i = 0; i < listSize; i++)
+    {
+        newArray[i] = aList[i];
+    }
+
+    delete[] aList;
+
+    aList = newArray;
+    arrayCapacity = newCapacity;
 }
