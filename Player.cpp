@@ -23,11 +23,34 @@ Player::Player(GameMechs *thisGMRef, Food *thisFoodRef, int initialLength)
     }
 }
 
+Player::Player(const Player& a)
+{
+    mainGameMechsRef = a.mainGameMechsRef;
+    foodRef = a.foodRef;
+    playerdirection = a.playerdirection;
+
+    playerPosList = new objPosArrayList(*a.playerPosList);
+}
+
+Player& Player::operator=(const Player& a)
+{
+    if(this != &a)
+    {
+        mainGameMechsRef = a.mainGameMechsRef;
+        foodRef = a.foodRef;
+        playerdirection = a.playerdirection;
+
+        playerPosList = new objPosArrayList(*a.playerPosList);
+    }
+    return *this;
+} 
+
 Player::~Player()
 {
     // delete any heap members here
     delete playerPosList;
 }
+
 
 objPosArrayList *Player::getPlayerPos() const
 {
@@ -205,7 +228,6 @@ bool Player::checkFoodConsumption()
 void Player::increasePlayerLength()
 {
     objPos headPosition = playerPosList->getHeadElement();
-
     objPos newSegment(headPosition.pos->x, headPosition.pos->y, '*');
     playerPosList->insertHead(newSegment);
 }

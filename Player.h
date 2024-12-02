@@ -21,6 +21,9 @@ class Player
         Player(GameMechs* thisGMRef, Food* thisFoodRef, int initalLength);
         ~Player();
 
+        Player(const Player& a); // copy constructor
+        Player& operator=(const Player& a); // copy assignment operator
+
         objPosArrayList* getPlayerPos() const; // Upgrade this in iteration 3.       
         void updatePlayerDir();
         void movePlayer();
