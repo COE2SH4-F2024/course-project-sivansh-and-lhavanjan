@@ -26,6 +26,7 @@ Player::Player(GameMechs *thisGMRef, Food *thisFoodRef, int initialLength)
 Player::~Player()
 {
     // delete any heap members here
+    delete playerPosList;
 }
 
 objPosArrayList *Player::getPlayerPos() const
@@ -98,9 +99,8 @@ void Player::movePlayer()
         int newX = playerPosList->getHeadElement().pos->x;
         int newY = playerPosList->getHeadElement().pos->y;
 
-        objPos bodyPos(newX, newY, '*');
         playerPosList->removeHead();
-        playerPosList->insertHead(bodyPos);
+        playerPosList->insertHead(objPos(newX, newY, '*'));
 
         switch (playerdirection)
         {
@@ -134,8 +134,6 @@ void Player::movePlayer()
             break;
         }
 
-        objPos newHeadPosition(newX, newY, '@');
-
         if (checkFoodConsumption())
         {
             increasePlayerLength();
@@ -144,9 +142,41 @@ void Player::movePlayer()
         }
         else
         {
-            playerPosList->insertHead(newHeadPosition);
+            playerPosList->insertHead(objPos(newX, newY, '@'));
             playerPosList->removeTail();
         }
+        // collision check
+        if (checkSelfCollision())
+        {
+            mainGameMechsRef->setLoseFlag();
+            mainGameMechsRef->setExitTrue();
+
+        }
+    }
+
+}
+
+bool Player::checkSelfCollision(){
+
+    if(playerPosList->getSize()>1){
+        
+        int headX=playerPosList->getHeadElement().pos->x;
+        int headY=playerPosList->getHeadElement().pos->y;
+
+        for (int i = 1; i < playerPosList->getSize(); i++)
+        {
+            int bodyX=playerPosList->getElement(i).pos->x;
+            int bodyY=playerPosList->getElement(i).pos->y;
+            
+            if (headX==bodyX && headY==bodyY)
+            {
+                return true;
+            }
+        }
+    }
+    else
+    {
+        return false;
     }
 }
 
