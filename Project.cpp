@@ -49,7 +49,6 @@ void Initialize(void)
 
 
     myGM = new GameMechs();
-    // myPlayer = new Player(myGM);
     myFood = new Food();
     myPlayer = new Player(myGM, myFood, 1);
 
@@ -70,11 +69,6 @@ void RunLogic(void)
         myGM->setExitTrue();
         MacUILib_printf("Exited by command.");
         return;
-    }
-
-    if(input == '+')
-    {
-        myGM->incrementScore();
     }
 
     if(input == '>')
@@ -106,7 +100,7 @@ void RunLogic(void)
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
     
-    if(input == 0 || input == '$' || input == '+' || input == 'R' || input == 'r' || input == '>' || input == '<' || input == '-')
+    if(input == 0 || input == '$' || input == 'R' || input == 'r' || input == '>' || input == '<' || input == '-')
     {
         myGM->clearInput();
     }

@@ -99,8 +99,8 @@ void Player::movePlayer()
         int newX = playerPosList->getHeadElement().pos->x;
         int newY = playerPosList->getHeadElement().pos->y;
 
-        playerPosList->removeHead();
-        playerPosList->insertHead(objPos(newX, newY, '*'));
+        // playerPosList->removeHead();
+        // playerPosList->insertHead(objPos(newX, newY, '*'));
 
         switch (playerdirection)
         {
@@ -134,10 +134,21 @@ void Player::movePlayer()
             break;
         }
 
-        if (checkFoodConsumption())
+        playerPosList->removeHead();
+        playerPosList->insertHead(objPos(newX, newY, '*'));
+
+        // collision check
+        if(checkSelfCollision())
+        {
+            mainGameMechsRef->setLoseFlag();
+            mainGameMechsRef->setExitTrue();
+            return;
+        }
+
+        if(checkFoodConsumption())
         {
             increasePlayerLength();
-            mainGameMechsRef->incrementScore();
+            mainGameMechsRef->incrementScore(playerPosList->getSize());
             foodRef->generateFood(playerPosList);
         }
         else
@@ -145,39 +156,8 @@ void Player::movePlayer()
             playerPosList->insertHead(objPos(newX, newY, '@'));
             playerPosList->removeTail();
         }
-        // collision check
-        if (checkSelfCollision())
-        {
-            mainGameMechsRef->setLoseFlag();
-            mainGameMechsRef->setExitTrue();
-
-        }
     }
 
-}
-
-bool Player::checkSelfCollision(){
-
-    if(playerPosList->getSize()>1){
-        
-        int headX=playerPosList->getHeadElement().pos->x;
-        int headY=playerPosList->getHeadElement().pos->y;
-
-        for (int i = 1; i < playerPosList->getSize(); i++)
-        {
-            int bodyX=playerPosList->getElement(i).pos->x;
-            int bodyY=playerPosList->getElement(i).pos->y;
-            
-            if (headX==bodyX && headY==bodyY)
-            {
-                return true;
-            }
-        }
-    }
-    else
-    {
-        return false;
-    }
 }
 
 // More methods to be added
@@ -228,4 +208,25 @@ void Player::increasePlayerLength()
 
     objPos newSegment(headPosition.pos->x, headPosition.pos->y, '*');
     playerPosList->insertHead(newSegment);
+}
+
+bool Player::checkSelfCollision()
+{
+    if(playerPosList->getSize()>1)
+    {    
+        int headX = playerPosList->getHeadElement().pos->x;
+        int headY = playerPosList->getHeadElement().pos->y;
+
+        for (int i = 1; i < playerPosList->getSize(); i++)
+        {
+            int bodyX=playerPosList->getElement(i).pos->x;
+            int bodyY=playerPosList->getElement(i).pos->y;
+            
+            if (headX==bodyX && headY==bodyY)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
