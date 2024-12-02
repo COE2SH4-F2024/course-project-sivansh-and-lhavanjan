@@ -157,8 +157,8 @@ void Player::movePlayer()
             break;
         }
 
-        playerPosList->removeHead();
-        playerPosList->insertHead(objPos(newX, newY, '*'));
+        // playerPosList->removeHead();
+        // playerPosList->insertHead(objPos(newX, newY, '*'));
 
         // collision check
         if(checkSelfCollision())
@@ -170,13 +170,15 @@ void Player::movePlayer()
 
         if(checkFoodConsumption())
         {
-            increasePlayerLength();
+            increasePlayerLength(newX, newY);
+            // playerPosList->insertHead(objPos(newX, newY, '@'));
             mainGameMechsRef->incrementScore(playerPosList->getSize());
             foodRef->generateFood(playerPosList);
         }
         else
         {
-            playerPosList->insertHead(objPos(newX, newY, '@'));
+            increasePlayerLength(newX, newY);
+            //playerPosList->insertHead(objPos(newX, newY, '@'));
             playerPosList->removeTail();
         }
     }
@@ -225,10 +227,16 @@ bool Player::checkFoodConsumption()
     return false;
 }
 
-void Player::increasePlayerLength()
+/*void Player::increasePlayerLength()
 {
     objPos headPosition = playerPosList->getHeadElement();
-    objPos newSegment(headPosition.pos->x, headPosition.pos->y, '*');
+    objPos newSegment(headPosition.pos->x, headPosition.pos->y, '@');
+    playerPosList->insertHead(newSegment);
+}*/
+
+void Player::increasePlayerLength(int newX, int newY)
+{
+    objPos newSegment(newX, newY, '@');
     playerPosList->insertHead(newSegment);
 }
 

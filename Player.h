@@ -32,7 +32,8 @@ class Player
         void speedControl();
         
         bool checkFoodConsumption();
-        void increasePlayerLength();
+        void increasePlayerLength(int newX, int newY);
+        // void increasePlayerLength();
         bool checkSelfCollision();
 
     private:
