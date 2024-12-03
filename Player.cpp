@@ -61,7 +61,6 @@ void Player::updatePlayerDir() {
             case 'w':
                 if (playerdirection != DOWN) { // Check if current direction is not DOWN
                     playerdirection = UP; // Set direction to UP
-                    MacUILib_printf("Player direction: UP\n"); // Print direction
                     hasInput = 1; // Set hasInput flag
                 }
                 break;
@@ -69,7 +68,6 @@ void Player::updatePlayerDir() {
             case 's':
                 if (playerdirection != UP) { // Check if current direction is not UP
                     playerdirection = DOWN; // Set direction to DOWN
-                    MacUILib_printf("Player direction: DOWN\n"); // Print direction
                     hasInput = 1; // Set hasInput flag
                 }
                 break;
@@ -77,7 +75,6 @@ void Player::updatePlayerDir() {
             case 'a':
                 if (playerdirection != RIGHT) { // Check if current direction is not RIGHT
                     playerdirection = LEFT; // Set direction to LEFT
-                    MacUILib_printf("Player direction: LEFT\n"); // Print direction
                     hasInput = 1; // Set hasInput flag
                 }
                 break;
@@ -85,7 +82,6 @@ void Player::updatePlayerDir() {
             case 'd':
                 if (playerdirection != LEFT) { // Check if current direction is not LEFT
                     playerdirection = RIGHT; // Set direction to RIGHT
-                    MacUILib_printf("Player direction: RIGHT\n"); // Print direction
                     hasInput = 1; // Set hasInput flag
                 }
                 break;

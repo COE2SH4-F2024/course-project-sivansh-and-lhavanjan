@@ -83,20 +83,11 @@ void RunLogic(void)
         myPlayer->speedControl();             // Control player speed
     }
 
-    // Trigger lose flag command
-    if (input == '-')
-    {
-        myGM->setLoseFlag(); // Set lose flag
-        myGM->setExitTrue(); // Set exit flag
-        MacUILib_printf("Debug: Lose flag triggered.");
-        return;
-    }
-
     myPlayer->updatePlayerDir(); // Update player direction
     myPlayer->movePlayer();      // Move player
 
     // Clear input if it matches specific commands
-    if (input == 0 || input == '$' || input == 'R' || input == 'r' || input == '>' || input == '<' || input == '-')
+    if (input == 0 || input == '$' || input == '>' || input == '<')
     {
         myGM->clearInput(); // Clear the input
     }
