@@ -122,9 +122,6 @@ void Player::movePlayer()
         int newX = playerPosList->getHeadElement().pos->x;
         int newY = playerPosList->getHeadElement().pos->y;
 
-        // playerPosList->removeHead();
-        // playerPosList->insertHead(objPos(newX, newY, '*'));
-
         switch (playerdirection)
         {
         case UP:
@@ -157,9 +154,6 @@ void Player::movePlayer()
             break;
         }
 
-        // playerPosList->removeHead();
-        // playerPosList->insertHead(objPos(newX, newY, '*'));
-
         // collision check
         if(checkSelfCollision())
         {
@@ -168,17 +162,27 @@ void Player::movePlayer()
             return;
         }
 
-        if(checkFoodConsumption())
+        if(checkFoodConsumption(foodRef))
         {
+            objPosArrayList* foodBucket = foodRef->getFoodBucket();
+            objPos headPosition = objPos(newX, newY, '@');
+
+            for(int i = 0; i < foodBucket->getSize(); i++)
+            {
+                objPos food = foodBucket->getElement(i);
+                if (headPosition.pos->x == food.pos->x && headPosition.pos->y == food.pos->y)
+                {
+                    applySpecialFoodEffect(food.getSymbol());
+                    foodBucket->removeHead();
+                    break;
+                }
+            }
             increasePlayerLength(newX, newY);
-            // playerPosList->insertHead(objPos(newX, newY, '@'));
-            mainGameMechsRef->incrementScore(playerPosList->getSize());
-            foodRef->generateFood(playerPosList);
+            foodRef->generateFood(playerPosList, 5);
         }
         else
         {
             increasePlayerLength(newX, newY);
-            //playerPosList->insertHead(objPos(newX, newY, '@'));
             playerPosList->removeTail();
         }
     }
@@ -214,25 +218,24 @@ void Player::speedControl()
     MacUILib_printf("Speed: %d, Delay: %d", mainGameMechsRef->getSpeed(), mainGameMechsRef->getDelayAmount());
 }
 
-bool Player::checkFoodConsumption()
+bool Player::checkFoodConsumption(Food* foodRef)
 {
     objPos headPosition = playerPosList->getHeadElement();
-    objPos foodPosition = foodRef->getFoodPos();
+    objPosArrayList* foodBucket = foodRef->getFoodBucket();
 
-    if (headPosition.pos->x == foodPosition.pos->x && headPosition.pos->y == foodPosition.pos->y)
+    for(int i = 0; i < foodBucket->getSize(); i++)
     {
-        return true;
+        objPos food = foodBucket->getElement(i);
+        if (headPosition.pos->x == food.pos->x && headPosition.pos->y == food.pos->y)
+        {
+            applySpecialFoodEffect(food.getSymbol());
+            foodBucket->removeHead();
+            return true;
+        }
     }
 
     return false;
 }
-
-/*void Player::increasePlayerLength()
-{
-    objPos headPosition = playerPosList->getHeadElement();
-    objPos newSegment(headPosition.pos->x, headPosition.pos->y, '@');
-    playerPosList->insertHead(newSegment);
-}*/
 
 void Player::increasePlayerLength(int newX, int newY)
 {
@@ -259,4 +262,19 @@ bool Player::checkSelfCollision()
         }
     }
     return false;
+}
+
+void Player::applySpecialFoodEffect(char foodSymbol)
+{
+    switch(foodSymbol)
+    {
+    case '?':
+        mainGameMechsRef->incrementScore(10);
+        break;
+    case 'o':
+        mainGameMechsRef->incrementScore(1);
+        break;
+    default:
+        break;
+    }
 }

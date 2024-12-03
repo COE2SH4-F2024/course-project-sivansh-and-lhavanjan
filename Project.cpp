@@ -52,7 +52,7 @@ void Initialize(void)
     myFood = new Food();
     myPlayer = new Player(myGM, myFood, 1);
 
-    myFood->generateFood(myPlayer->getPlayerPos());
+    myFood->generateFood(myPlayer->getPlayerPos(), 5);
 }
 
 void GetInput(void)
@@ -112,7 +112,8 @@ void DrawScreen(void)
 
     // objPos playerPos = myPlayer->getPlayerPos();
     objPosArrayList* snakeBody = myPlayer->getPlayerPos();
-    objPos foodPosition = myFood->getFoodPos();
+    // objPos foodPosition = myFood->getFoodPos();
+    objPosArrayList* foodBucket = myFood->getFoodBucket();
 
     // MacUILib_printf("Player [x, y, symbol] = [%d, %d, %c]\n", playerPos.pos->x, playerPos.pos->y, playerPos.symbol);
 
@@ -141,7 +142,7 @@ void DrawScreen(void)
         MacUILib_printf("\n");
     } */
 
-   for(int y = 0; y < height; y++)
+   /*for(int y = 0; y < height; y++)
    {
         for(int x = 0; x < width; x++)
         {
@@ -180,8 +181,60 @@ void DrawScreen(void)
     MacUILib_printf("Debug: Score incremented. Current Score: %d\n", myGM->getScore());
     MacUILib_printf("Debug: Food generated at [%d, %d]\n", myFood->getFoodPos().pos->x, myFood->getFoodPos().pos->y);
     MacUILib_printf("Speed: %d, Delay: %d\n", myGM->getSpeed(), myGM->getDelayAmount());
-}
+}*/
 
+   for(int y = 0; y < height; y++)
+   {
+        for(int x = 0; x < width; x++)
+        {
+            bool isSnakeBody = false;
+            bool isFood = false;
+
+            for(int i = 0; i < snakeBody->getSize(); i++)
+            {
+                if(snakeBody->getElement(i).pos->x == x && snakeBody->getElement(i).pos->y == y)
+                {
+                    MacUILib_printf("%c", snakeBody->getElement(i).getSymbol());
+                    isSnakeBody = true;
+                    break;
+                }
+            }
+
+            if(!isSnakeBody)
+            {
+
+                for(int i = 0; i < foodBucket->getSize(); i++)
+                {
+                    objPos food = foodBucket->getElement(i);
+                    
+                    if(food.pos->x == x && food.pos->y == y)
+                    {
+                        MacUILib_printf("%c", food.getSymbol());
+                        isFood = true;
+                        break;
+                    }
+                }
+            }
+
+            if(!isSnakeBody && !isFood)
+            {
+                if(y == 0 || y == height - 1 || x == 0 || x == width - 1)
+                {
+                    MacUILib_printf("#");
+                }
+                else
+                {
+                    MacUILib_printf(" ");
+                }
+            }
+        
+        }
+        MacUILib_printf("\n");
+    }
+
+    MacUILib_printf("Debug: Score incremented. Current Score: %d\n", myGM->getScore());
+    MacUILib_printf("Speed: %d, Delay: %d\n", myGM->getSpeed(), myGM->getDelayAmount());
+}
 void LoopDelay(void)
 {
     MacUILib_Delay(myGM->getDelayAmount()); // 0.1s delay

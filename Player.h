@@ -31,9 +31,9 @@ class Player
         // More methods to be added here
         void speedControl();
         
-        bool checkFoodConsumption();
+        bool checkFoodConsumption(Food* foodRef);
+        void applySpecialFoodEffect(char foodSymbol);
         void increasePlayerLength(int newX, int newY);
-        // void increasePlayerLength();
         bool checkSelfCollision();
 
     private:
