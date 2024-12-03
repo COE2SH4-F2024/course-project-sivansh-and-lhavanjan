@@ -1,54 +1,58 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "GameMechs.h"
-#include "objPos.h"
-#include "objPosArrayList.h"
-#include "Food.h"
+#include "GameMechs.h"          // Include the GameMechs class definition
+#include "objPos.h"             // Include the objPos class definition
+#include "objPosArrayList.h"    // Include the objPosArrayList class definition
+#include "Food.h"               // Include the Food class definition
 
-class Player
-{
-    // Construct the remaining declaration from the project manual.
-
-    // Only some sample members are included here
-
-    // You will include more data members and member functions to complete your design.
-
+// Class representing a player in the game
+class Player {
 public:
-    enum Dir
-    {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT,
-        STOP
-    }; // This is the direction state
+    // Enumeration for player direction
+    enum Dir {
+        UP,    // Move up
+        DOWN,  // Move down
+        LEFT,  // Move left
+        RIGHT, // Move right
+        STOP   // Stop moving
+    };
 
-    Player(GameMechs *thisGMRef, Food *thisFoodRef, int initalLength);
+    // Constructor to initialize a Player object
+    Player(GameMechs *thisGMRef, Food *thisFoodRef, int initialLength);
+    // Destructor to clean up resources
     ~Player();
 
-    Player(const Player &a);            // copy constructor
-    Player &operator=(const Player &a); // copy assignment operator
+    // Copy constructor
+    Player(const Player &a);
+    // Assignment operator
+    Player &operator=(const Player &a);
 
-    objPosArrayList *getPlayerPos() const; // Upgrade this in iteration 3.
+    // Get the current player position list
+    objPosArrayList *getPlayerPos() const;
+    // Update the player direction based on input
     void updatePlayerDir();
+    // Move the player in the current direction
     void movePlayer();
 
-    // More methods to be added here
+    // Control the speed of the player
     void speedControl();
 
+    // Check if the player has consumed food
     bool checkFoodConsumption(Food *foodRef);
+    // Apply special effect based on food symbol
     void applySpecialFoodEffect(char foodSymbol);
+    // Increase the length of the player
     void increasePlayerLength(int newX, int newY);
+    // Check if the player has collided with itself
     bool checkSelfCollision();
 
 private:
-    objPosArrayList *playerPosList; // Upgrade this in iteration 3.
-    enum Dir playerdirection;
+    objPosArrayList *playerPosList; // List of player positions
+    Dir playerdirection;            // Current direction of the player
 
-    // Need a reference to the Main Game Mechanisms
-    GameMechs *mainGameMechsRef;
-    Food *foodRef;
+    GameMechs *mainGameMechsRef;    // Reference to game mechanics
+    Food *foodRef;                  // Reference to food
 };
 
 #endif

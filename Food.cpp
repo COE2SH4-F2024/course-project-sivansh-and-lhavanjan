@@ -1,90 +1,64 @@
 #include "Food.h"
 #include "MacUILib.h"
 
-/*Food::Food()
-{
-    foodPos.setObjPos(10, 10, 'o');
-}*/
-
-Food::Food()
-{
-    foodBucket = new objPosArrayList(); // initialize space for the bucket on the heap
+// Constructor for the Food class
+Food::Food() {
+    // Initialize the food bucket as a new objPosArrayList
+    foodBucket = new objPosArrayList();
+    // Initialize the count of special foods
     specialFoods = 0;
 }
 
-Food::~Food()
-{
-    delete foodBucket; // deallocates the space initialized at the end of the program
+// Copy constructor for the Food class
+Food::Food(const Food &other) {
+    // Create a new objPosArrayList by copying the other food bucket
+    foodBucket = new objPosArrayList(*other.foodBucket);
+    // Copy the count of special foods
+    specialFoods = other.specialFoods;
 }
 
-/*void Food::generateFood(objPosArrayList* snakeBody)
-{
-    // srand(time(0));
-
-    int boardWidth = 28;
-    int boardHeight = 13;
-
-    int randX;
-    int randY;
-    bool validPosition = false;
-    int iterations = 0;
-
-    MacUILib_printf("Debug: Starting food generation\n");
-
-    while(!validPosition)
-    {
-        randX = (rand() % boardWidth) + 1;
-        randY = (rand() % boardHeight) + 1;
-
-        validPosition = true;
-
-        for(int i = 0; i < snakeBody->getSize(); i++)
-        {
-            if(snakeBody->getElement(i).pos->x == randX && snakeBody->getElement(i).pos->y == randY)
-            {
-                validPosition = false;
-                break;
-            }
-        }
-
-        iterations++;
-        if(iterations > 1000)
-        {
-            randX = 0;
-            randY = 0;
-            validPosition = true;
-            MacUILib_printf("Debug: Too many iterations, defaulting food position to [%d, %d]\n", randX, randY);
-        }
+// Assignment operator for the Food class
+Food &Food::operator=(const Food &other) {
+    if (this != &other) { // Check for self-assignment
+        // Create a new objPosArrayList by copying the other food bucket
+        foodBucket = new objPosArrayList(*other.foodBucket);
+        // Copy the count of special foods
+        specialFoods = other.specialFoods;
     }
-    foodPos.setObjPos(randX, randY, 'o');
-    MacUILib_printf("Debug: Food placed at [%d, %d]\n", randX, randY);
-}*/
+    return *this; // Return the current object
+}
 
-void Food::generateFood(objPosArrayList *snakeBody, int totalFoods)
-{
-    // srand(time(0));
+// Destructor for the Food class
+Food::~Food() {
+    // Delete the food bucket to free memory
+    delete foodBucket;
+}
 
+// Method to generate food on the board
+void Food::generateFood(objPosArrayList *snakeBody, int totalFoods) {
+    // Clear any existing food before generating new ones
     clearFood();
+    // Define the board dimensions
     int boardWidth = 28;
     int boardHeight = 13;
     int randX;
     int randY;
     bool validPosition;
 
-    for (int i = 0; i < totalFoods; i++)
-    {
+    // Loop to generate the specified number of food items
+    for (int i = 0; i < totalFoods; i++) {
         validPosition = false;
-        while (!validPosition)
-        {
+        // Find a valid position for the food
+        while (!validPosition) {
+            // Generate random coordinates within the board
             randX = (rand() % boardWidth) + 1;
             randY = (rand() % boardHeight) + 1;
 
             validPosition = true;
 
-            for (int j = 0; j < snakeBody->getSize(); j++)
-            {
-                if (snakeBody->getElement(i).pos->x == randX && snakeBody->getElement(i).pos->y == randY)
-                {
+            // Check if the generated position overlaps with the snake's body
+            for (int j = 0; j < snakeBody->getSize(); j++) {
+                if (snakeBody->getElement(i).pos->x == randX && snakeBody->getElement(i).pos->y == randY) {
                     validPosition = false;
                     break;
                 }
@@ -92,33 +66,27 @@ void Food::generateFood(objPosArrayList *snakeBody, int totalFoods)
         }
 
         char symbol;
-        if (i < 2) // first two foods in the bucket are special foods
-        {
-            symbol = '?'; // '?' to denote special foods, kinda like mario kart
-        }
-        else
-        {
-            symbol = 'o'; // 'o' to denote regular food
+        // Assign a special symbol for the first two foods
+        if (i < 2) {
+            symbol = '?';
+        } else {
+            symbol = 'o';
         }
 
+        // Insert the new food item into the food bucket
         foodBucket->insertTail(objPos(randX, randY, symbol));
     }
 }
 
-/*objPos Food::getFoodPos() const
-{
-    return foodPos;
-}*/
-
-objPosArrayList *Food::getFoodBucket() const
-{
+// Method to get the current food bucket
+objPosArrayList *Food::getFoodBucket() const {
     return foodBucket;
 }
 
-void Food::clearFood()
-{
-    while (foodBucket->getSize() > 0)
-    {
+// Method to clear all food items from the food bucket
+void Food::clearFood() {
+    // Remove all elements from the food bucket
+    while (foodBucket->getSize() > 0) {
         foodBucket->removeHead();
     }
 }

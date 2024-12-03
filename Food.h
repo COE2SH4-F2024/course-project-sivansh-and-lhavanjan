@@ -6,28 +6,35 @@
 
 #include "objPos.h"
 #include "objPosArrayList.h"
-
 #include "GameMechs.h"
 
-using namespace std;
-
-class Food
-{
+// Class representing the food in the game
+class Food {
 private:
-    // objPos foodPos;
-    objPosArrayList *foodBucket; // item bin to hold the food on the board
-    int specialFoods;            // number of special foods
+    objPosArrayList *foodBucket; // List to store food positions
+    int specialFoods;            // Count of special food items
+
 public:
+    // Constructor
     Food();
+
+    // Copy constructor
+    Food(const Food &other);
+
+    // Assignment operator
+    Food &operator=(const Food &other);
+
+    // Destructor
     ~Food();
 
-    // void generateFood(objPosArrayList* snakeBody);
-    void generateFood(objPosArrayList *snakeBody, int totalFoods); // generate the random items on the board from the item bin
-    // objPos getFoodPos() const;
+    // Method to generate food on the board
+    void generateFood(objPosArrayList *snakeBody, int totalFoods);
 
-    objPosArrayList *getFoodBucket() const; // getter for the item bin
+    // Method to get the current food bucket
+    objPosArrayList *getFoodBucket() const;
 
-    void clearFood(); // clears the food objects for a reset
+    // Method to clear all food items from the food bucket
+    void clearFood();
 };
 
 #endif

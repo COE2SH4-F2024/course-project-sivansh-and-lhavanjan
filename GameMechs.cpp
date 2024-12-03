@@ -1,134 +1,132 @@
 #include "GameMechs.h"
 #include "MacUILib.h"
 
-GameMechs::GameMechs()
-{
-    input = 0;
-    exitFlag = false;
-    loseFlag = false;
-    score = 0;
+// Default constructor for GameMechs class
+GameMechs::GameMechs() {
+    input = 0;            // Initialize input to 0
+    exitFlag = false;     // Initialize exitFlag to false
+    loseFlag = false;     // Initialize loseFlag to false
+    score = 0;            // Initialize score to 0
 
-    boardSizeX = 30;
-    boardSizeY = 15;
+    boardSizeX = 30;      // Set default board width
+    boardSizeY = 15;      // Set default board height
 }
 
-GameMechs::GameMechs(int boardX, int boardY)
-{
-    input = 0;
-    exitFlag = false;
-    loseFlag = false;
-    score = 0;
+// Additional constructor for GameMechs class
+GameMechs::GameMechs(int boardX, int boardY) {
+    input = 0;            // Initialize input to 0
+    exitFlag = false;     // Initialize exitFlag to false
+    loseFlag = false;     // Initialize loseFlag to false
+    score = 0;            // Initialize score to 0
 
-    boardSizeX = boardX;
-    boardSizeY = boardY;
+    boardSizeX = boardX;  // Set board width to given value
+    boardSizeY = boardY;  // Set board height to given value
 }
 
-GameMechs::GameMechs(const GameMechs &game)
-{
-    input = 0;
-    exitFlag = false;
-    loseFlag = false;
-    score = 0;
+// Copy constructor for GameMechs class
+GameMechs::GameMechs(const GameMechs &game) {
+    input = 0;            // Initialize input to 0
+    exitFlag = false;     // Initialize exitFlag to false
+    loseFlag = false;     // Initialize loseFlag to false
+    score = 0;            // Initialize score to 0
 
-    boardSizeX = 30;
-    boardSizeY = 15;
+    boardSizeX = 30;      // Set default board width
+    boardSizeY = 15;      // Set default board height
 }
 
-GameMechs &GameMechs::operator=(const GameMechs &game)
-{
-    if (this != &game)
-    {
-        this->boardSizeX = 30;
-        this->boardSizeY = 15;
-        this->input = 0;
-        this->exitFlag = false;
-        this->loseFlag = false;
-        this->score = 0;
+// Assignment operator for GameMechs class
+GameMechs &GameMechs::operator=(const GameMechs &game) {
+    if (this != &game) {  // Check for self-assignment
+        this->boardSizeX = 30;  // Set default board width
+        this->boardSizeY = 15;  // Set default board height
+        this->input = 0;        // Initialize input to 0
+        this->exitFlag = false; // Initialize exitFlag to false
+        this->loseFlag = false; // Initialize loseFlag to false
+        this->score = 0;        // Initialize score to 0
     }
-    return *this;
+    return *this;         // Return the current object
 }
 
-// do you need a destructor?
-GameMechs::~GameMechs()
-{
+// Destructor for GameMechs class
+GameMechs::~GameMechs() {
 }
 
-bool GameMechs::getExitFlagStatus() const
-{
+// Get the status of the exit flag
+bool GameMechs::getExitFlagStatus() const {
     return exitFlag;
 }
 
-bool GameMechs::getLoseFlagStatus() const
-{
+// Get the status of the lose flag
+bool GameMechs::getLoseFlagStatus() const {
     return loseFlag;
 }
 
-char GameMechs::getInput()
-{
-    if (MacUILib_hasChar())
-    {
-        input = MacUILib_getChar();
+// Get the current input character
+char GameMechs::getInput() {
+    if (MacUILib_hasChar()) {  // Check if there is a character input
+        input = MacUILib_getChar();  // Get the character input
     }
-    return input;
+    return input;  // Return the current input
 }
 
-int GameMechs::getScore() const
-{
+// Get the current score
+int GameMechs::getScore() const {
     return score;
 }
 
-void GameMechs::incrementScore(int amount)
-{
+// Increment the score by a specified amount
+void GameMechs::incrementScore(int amount) {
     score += amount;
 }
 
-int GameMechs::getBoardSizeX() const
-{
+// Get the board width
+int GameMechs::getBoardSizeX() const {
     return boardSizeX;
 }
 
-int GameMechs::getBoardSizeY() const
-{
+// Get the board height
+int GameMechs::getBoardSizeY() const {
     return boardSizeY;
 }
 
-void GameMechs::setExitTrue()
-{
+// Set the exit flag to true
+void GameMechs::setExitTrue() {
     exitFlag = true;
 }
 
-void GameMechs::setLoseFlag()
-{
+// Set the lose flag to true
+void GameMechs::setLoseFlag() {
     loseFlag = true;
 }
 
-void GameMechs::setInput(char this_input)
-{
+// Set the input character
+void GameMechs::setInput(char this_input) {
     input = this_input;
 }
 
-void GameMechs::clearInput()
-{
+// Clear the input character
+void GameMechs::clearInput() {
     input = 0;
 }
 
-// More methods should be added here
-int GameMechs::getSpeed()
-{
+// Get the current speed
+int GameMechs::getSpeed() {
     return speed;
 }
-void GameMechs::setSpeed(int newSpeed)
-{
-    if (newSpeed >= 1 && newSpeed <= 5)
-    {
+
+// Set the speed to a new value within a valid range
+void GameMechs::setSpeed(int newSpeed) {
+    if (newSpeed >= 1 && newSpeed <= 5) {
         speed = newSpeed;
     }
 }
-int GameMechs::getDelayAmount()
-{
+
+// Get the current delay amount
+int GameMechs::getDelayAmount() {
     return delayAmount;
 }
-void GameMechs::setDelayAmount(int amount)
-{
+
+// Set the delay amount to a new value
+void GameMechs::setDelayAmount(int amount) {
     delayAmount = amount;
 }

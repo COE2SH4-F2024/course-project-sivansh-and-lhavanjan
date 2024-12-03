@@ -1,36 +1,49 @@
 #ifndef OBJPOS_H
 #define OBJPOS_H
 
-// Not really a C++ thing
-typedef struct
-{
-    int x;
-    int y;
+// Structure to represent a position with x and y coordinates
+typedef struct {
+    int x; // x coordinate
+    int y; // y coordinate
 } Pos;
 
-class objPos
-{
+// Class to represent an object with a position and a symbol
+class objPos {
 public:
-    Pos *pos;
-    char symbol;
+    Pos *pos;    // Pointer to a Pos structure
+    char symbol; // Symbol representing the object
 
+    // Default constructor
     objPos();
+
+    // Parameterized constructor
     objPos(int xPos, int yPos, char sym);
 
-    // Respect the rule of six / minimum four
-    // [TODO] Implement the missing special member functions to meet the minimum four rule
+    // Copy constructor
+    objPos(const objPos &a);
 
-    objPos(const objPos &a);            // Copy Constructor
-    objPos &operator=(const objPos &a); // Copy Assignment Operator
-    ~objPos();                          // Destructor
+    // Assignment operator
+    objPos &operator=(const objPos &a);
 
+    // Destructor
+    ~objPos();
+
+    // Set the position and symbol using another objPos object
     void setObjPos(objPos o);
+
+    // Set the position and symbol using individual values
     void setObjPos(int xPos, int yPos, char sym);
 
+    // Get the current position and symbol as an objPos object
     objPos getObjPos() const;
+
+    // Get the current symbol
     char getSymbol() const;
+
+    // Get the symbol if the position matches the reference position
     char getSymbolIfPosEqual(const objPos *refPos) const;
 
+    // Check if the position matches the reference position
     bool isPosEqual(const objPos *refPos) const;
 };
 

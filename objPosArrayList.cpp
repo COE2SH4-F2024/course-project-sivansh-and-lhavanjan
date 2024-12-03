@@ -1,142 +1,132 @@
 #include "objPosArrayList.h"
 #include "MacUILib.h"
 
-// Paste your Tested implementation here.
-// Paste your Tested implementation here.
-// Paste your Tested implementation here.
-
-objPosArrayList::objPosArrayList() // Default constructor
-{
-    listSize = 0;
-    arrayCapacity = ARRAY_MAX_CAP;
-    aList = new objPos[ARRAY_MAX_CAP];
+// Default constructor for objPosArrayList class
+objPosArrayList::objPosArrayList() {
+    listSize = 0;                          // Initialize list size to 0
+    arrayCapacity = ARRAY_MAX_CAP;         // Set initial array capacity
+    aList = new objPos[ARRAY_MAX_CAP];     // Allocate memory for the array
 }
 
-objPosArrayList::objPosArrayList(const objPosArrayList &sList) // Copy constructor
-{
-    listSize = sList.listSize;
-    arrayCapacity = sList.arrayCapacity;
-    aList = new objPos[ARRAY_MAX_CAP];
+// Copy constructor for objPosArrayList class
+objPosArrayList::objPosArrayList(const objPosArrayList &sList) {
+    listSize = sList.listSize;             // Copy list size from source list
+    arrayCapacity = sList.arrayCapacity;   // Copy array capacity from source list
+    aList = new objPos[ARRAY_MAX_CAP];     // Allocate memory for the array
 
-    for (int i = 0; i < listSize; i++)
-    {
+    // Copy elements from source list to new list
+    for (int i = 0; i < listSize; i++) {
         aList[i] = sList.aList[i];
     }
 }
 
-objPosArrayList &objPosArrayList::operator=(const objPosArrayList &array)
-{
-    if (this != &array)
-    {
-        this->listSize = array.getSize();
-        for (int i = 0; i < this->listSize; i++)
-        {
+// Assignment operator for objPosArrayList class
+objPosArrayList &objPosArrayList::operator=(const objPosArrayList &array) {
+    if (this != &array) {                  // Check for self-assignment
+        this->listSize = array.getSize();  // Copy list size
+        // Copy elements from source array to current array
+        for (int i = 0; i < this->listSize; i++) {
             this->aList[i] = array.aList[i];
         }
     }
-    return *this;
+    return *this;                          // Return the current object
 }
 
-objPosArrayList::~objPosArrayList() // Destructor
-{
-    delete[] aList;
+// Destructor for objPosArrayList class
+objPosArrayList::~objPosArrayList() {
+    delete[] aList;                        // Deallocate memory for the array
 }
 
-int objPosArrayList::getSize() const
-{
-    return listSize;
+// Get the current size of the list
+int objPosArrayList::getSize() const {
+    return listSize;                       // Return the list size
 }
 
-void objPosArrayList::insertHead(objPos thisPos)
-{
-    if (listSize == arrayCapacity)
-    {
-        MacUILib_printf("Array is full");
-        resizeArray();
+// Insert an element at the head of the list
+void objPosArrayList::insertHead(objPos thisPos) {
+    if (listSize == arrayCapacity) {       // Check if array is full
+        MacUILib_printf("Array is full");  // Print message
+        resizeArray();                     // Resize the array
     }
 
-    for (int i = listSize; i > 0; i--)
-    {
+    // Shift elements to the right to make space at the head
+    for (int i = listSize; i > 0; i--) {
         aList[i] = aList[i - 1];
     }
 
-    aList[0] = thisPos;
-    listSize++;
+    aList[0] = thisPos;                    // Insert new element at the head
+    listSize++;                            // Increment list size
 }
 
-void objPosArrayList::insertTail(objPos thisPos)
-{
-    if (listSize == arrayCapacity)
-    {
-        MacUILib_printf("Array is full");
-        resizeArray();
+// Insert an element at the tail of the list
+void objPosArrayList::insertTail(objPos thisPos) {
+    if (listSize == arrayCapacity) {       // Check if array is full
+        MacUILib_printf("Array is full");  // Print message
+        resizeArray();                     // Resize the array
     }
 
-    aList[listSize] = thisPos;
-    listSize++;
+    aList[listSize] = thisPos;             // Insert new element at the tail
+    listSize++;                            // Increment list size
 }
 
-void objPosArrayList::removeHead()
-{
-    if (listSize == 0)
-    {
-        MacUILib_printf("List is empty");
-        return;
+// Remove the element at the head of the list
+void objPosArrayList::removeHead() {
+    if (listSize == 0) {                   // Check if list is empty
+        MacUILib_printf("List is empty");  // Print message
+        return;                            // Exit function
     }
 
-    for (int i = 0; i < listSize - 1; i++)
-    {
+    // Shift elements to the left to remove the head
+    for (int i = 0; i < listSize - 1; i++) {
         aList[i] = aList[i + 1];
     }
 
-    listSize--;
+    listSize--;                            // Decrement list size
 }
 
-void objPosArrayList::removeTail()
-{
-    if (listSize == 0)
-    {
-        MacUILib_printf("List is empty");
-        return;
+// Remove the element at the tail of the list
+void objPosArrayList::removeTail() {
+    if (listSize == 0) {                   // Check if list is empty
+        MacUILib_printf("List is empty");  // Print message
+        return;                            // Exit function
     }
 
-    listSize--;
+    listSize--;                            // Decrement list size
 }
 
-objPos objPosArrayList::getHeadElement() const
-{
-    return aList[0];
+// Get the element at the head of the list
+objPos objPosArrayList::getHeadElement() const {
+    return aList[0];                       // Return the head element
 }
 
-objPos objPosArrayList::getTailElement() const
-{
-    return aList[listSize - 1];
+// Get the element at the tail of the list
+objPos objPosArrayList::getTailElement() const {
+    return aList[listSize - 1];            // Return the tail element
 }
 
-objPos objPosArrayList::getElement(int index) const
-{
-    if (index < 0 || index >= listSize)
-    {
-        MacUILib_printf("Invalid index");
-        return objPos();
+// Get the element at a specific index
+objPos objPosArrayList::getElement(int index) const {
+    if (index < 0 || index >= listSize) {  // Check if index is valid
+        MacUILib_printf("Invalid index");  // Print message
+        return objPos();                   // Return a default objPos object
     }
 
-    return aList[index];
+    return aList[index];                   // Return the element at the specified index
 }
 
-void objPosArrayList::resizeArray()
-{
-    int newCapacity = arrayCapacity * 2;
+// Resize the array when capacity is reached
+void objPosArrayList::resizeArray() {
+    int newCapacity = arrayCapacity * 2;   // Double the capacity
 
-    objPos *newArray = new objPos[newCapacity];
+    objPos *newArray = new objPos[newCapacity]; // Allocate memory for the new array
 
-    for (int i = 0; i < listSize; i++)
-    {
+    // Copy elements from old array to new array
+    for (int i = 0; i < listSize; i++) {
         newArray[i] = aList[i];
     }
 
-    delete[] aList;
+    delete[] aList;                        // Deallocate memory for the old array
 
-    aList = newArray;
-    arrayCapacity = newCapacity;
+    aList = newArray;                      // Update the array pointer to the new array
+    arrayCapacity = newCapacity;           // Update the capacity
 }

@@ -1,5 +1,6 @@
 #include "MacUILib.h"
 
+// Function pointer for printing, set based on platform
 print_ptr MacUILib_printf;
 
 #ifdef WINDOWS
@@ -7,43 +8,40 @@ print_ptr MacUILib_printf;
 #include <conio.h>
 #include <windows.h>
 
-void MacUILib_init(void)
-{
-	MacUILib_printf = &printf;
+// Initialize the library for Windows platform
+void MacUILib_init(void) {
+    MacUILib_printf = &printf; // Set the print function to standard printf
 }
 
-void MacUILib_init_sync(void)
-{
-	// Nothing different.  Win allows scanf() to be used with conio.h anyways.
-	MacUILib_printf = &printf;
+// Initialize the library for Windows platform with synchronous settings
+void MacUILib_init_sync(void) {
+    MacUILib_printf = &printf; // Set the print function to standard printf
 }
 
-void MacUILib_Delay(int usec)
-{
-	Sleep(usec / 1000);
+// Delay execution for a specified number of microseconds
+void MacUILib_Delay(int usec) {
+    Sleep(usec / 1000); // Convert microseconds to milliseconds for Sleep
 }
 
-int MacUILib_hasChar(void)
-{
-	return _kbhit();
+// Check if a keyboard character is available
+int MacUILib_hasChar(void) {
+    return _kbhit(); // Return non-zero if a key is available
 }
 
-char MacUILib_getChar(void)
-{
-	return _getch();
+// Get a character from the keyboard
+char MacUILib_getChar(void) {
+    return _getch(); // Return the character read from the keyboard
 }
 
-void MacUILib_clearScreen(void)
-{
-	system("cls");
+// Clear the console screen
+void MacUILib_clearScreen(void) {
+    system("cls"); // Use system call to clear the screen
 }
 
-void MacUILib_uninit(void)
-{
-	// No implementation required
-	// system("cls");
-	MacUILib_printf("\nPress ENTER to Shut Down\n");
-	getchar();
+// Uninitialize the library and prompt for shutdown
+void MacUILib_uninit(void) {
+    MacUILib_printf("\nPress ENTER to Shut Down\n"); // Prompt user
+    getchar(); // Wait for user input
 }
 
 #endif
@@ -53,61 +51,59 @@ void MacUILib_uninit(void)
 #include <ncurses.h>
 #include <unistd.h>
 
-void MacUILib_init(void)
-{
-	MacUILib_printf = &printw;
+// Initialize the library for POSIX platform
+void MacUILib_init(void) {
+    MacUILib_printf = &printw; // Set the print function to ncurses printw
 
-	initscr();
-	noecho();
-	cbreak();
-	nodelay(stdscr, TRUE);
-	curs_set(0);
+    initscr(); // Initialize the ncurses screen
+    noecho(); // Disable echoing of typed characters
+    cbreak(); // Disable line buffering
+    nodelay(stdscr, TRUE); // Set getch to be non-blocking
+    curs_set(0); // Hide the cursor
 }
 
-void MacUILib_init_sync(void)
-{
-	MacUILib_printf = &printw;
+// Initialize the library for POSIX platform with synchronous settings
+void MacUILib_init_sync(void) {
+    MacUILib_printf = &printw; // Set the print function to ncurses printw
 
-	initscr();
-	noecho();
-	curs_set(0);
+    initscr(); // Initialize the ncurses screen
+    noecho(); // Disable echoing of typed characters
+    curs_set(0); // Hide the cursor
 }
 
-void MacUILib_Delay(int usec)
-{
-	refresh();
-	usleep(usec);
+// Delay execution for a specified number of microseconds
+void MacUILib_Delay(int usec) {
+    refresh(); // Refresh the screen to apply changes
+    usleep(usec); // Sleep for the specified microseconds
 }
 
-int MacUILib_hasChar()
-{
-	char ch = getch();
-	if (ch == ERR)
-		return 0;
-	else
-	{
-		ungetch(ch);
-		return 1;
-	}
+// Check if a keyboard character is available
+int MacUILib_hasChar() {
+    char ch = getch(); // Get a character from the keyboard
+    if (ch == ERR) {
+        return 0; // Return 0 if no character is available
+    } else {
+        ungetch(ch); // Put the character back into the input buffer
+        return 1; // Return 1 if a character is available
+    }
 }
 
-char MacUILib_getChar(void)
-{
-	return getch();
+// Get a character from the keyboard
+char MacUILib_getChar(void) {
+    return getch(); // Return the character read from the keyboard
 }
 
-void MacUILib_clearScreen(void)
-{
-	clear();
+// Clear the console screen
+void MacUILib_clearScreen(void) {
+    clear(); // Clear the ncurses screen
 }
 
-void MacUILib_uninit(void)
-{
-	// clear();
-	MacUILib_printf("\nPress ENTER to Shut Down\n");
-	refresh();
-	getchar();
-	endwin();
+// Uninitialize the library and prompt for shutdown
+void MacUILib_uninit(void) {
+    MacUILib_printf("\nPress ENTER to Shut Down\n"); // Prompt user
+    refresh(); // Refresh the screen to apply changes
+    getchar(); // Wait for user input
+    endwin(); // End ncurses mode
 }
 
 #endif
