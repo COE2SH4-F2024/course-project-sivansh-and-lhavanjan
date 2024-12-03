@@ -23,7 +23,7 @@ Player::Player(GameMechs *thisGMRef, Food *thisFoodRef, int initialLength)
     }
 }
 
-Player::Player(const Player& a)
+Player::Player(const Player &a)
 {
     mainGameMechsRef = a.mainGameMechsRef;
     foodRef = a.foodRef;
@@ -32,25 +32,24 @@ Player::Player(const Player& a)
     playerPosList = new objPosArrayList(*a.playerPosList);
 }
 
-Player& Player::operator=(const Player& a)
+Player &Player::operator=(const Player &a)
 {
-    if(this != &a)
+    if (this != &a)
     {
-        mainGameMechsRef = a.mainGameMechsRef;
-        foodRef = a.foodRef;
-        playerdirection = a.playerdirection;
+        this->mainGameMechsRef = a.mainGameMechsRef;
+        this->foodRef = a.foodRef;
+        this->playerdirection = a.playerdirection;
 
-        playerPosList = new objPosArrayList(*a.playerPosList);
+        this->playerPosList = new objPosArrayList(*a.playerPosList);
     }
     return *this;
-} 
+}
 
 Player::~Player()
 {
     // delete any heap members here
     delete playerPosList;
 }
-
 
 objPosArrayList *Player::getPlayerPos() const
 {
@@ -155,19 +154,19 @@ void Player::movePlayer()
         }
 
         // collision check
-        if(checkSelfCollision())
+        if (checkSelfCollision())
         {
             mainGameMechsRef->setLoseFlag();
             mainGameMechsRef->setExitTrue();
             return;
         }
 
-        if(checkFoodConsumption(foodRef))
+        if (checkFoodConsumption(foodRef))
         {
-            objPosArrayList* foodBucket = foodRef->getFoodBucket();
+            objPosArrayList *foodBucket = foodRef->getFoodBucket();
             objPos headPosition = objPos(newX, newY, '@');
 
-            for(int i = 0; i < foodBucket->getSize(); i++)
+            for (int i = 0; i < foodBucket->getSize(); i++)
             {
                 objPos food = foodBucket->getElement(i);
                 if (headPosition.pos->x == food.pos->x && headPosition.pos->y == food.pos->y)
@@ -186,7 +185,6 @@ void Player::movePlayer()
             playerPosList->removeTail();
         }
     }
-
 }
 
 // More methods to be added
@@ -218,12 +216,12 @@ void Player::speedControl()
     MacUILib_printf("Speed: %d, Delay: %d", mainGameMechsRef->getSpeed(), mainGameMechsRef->getDelayAmount());
 }
 
-bool Player::checkFoodConsumption(Food* foodRef)
+bool Player::checkFoodConsumption(Food *foodRef)
 {
     objPos headPosition = playerPosList->getHeadElement();
-    objPosArrayList* foodBucket = foodRef->getFoodBucket();
+    objPosArrayList *foodBucket = foodRef->getFoodBucket();
 
-    for(int i = 0; i < foodBucket->getSize(); i++)
+    for (int i = 0; i < foodBucket->getSize(); i++)
     {
         objPos food = foodBucket->getElement(i);
         if (headPosition.pos->x == food.pos->x && headPosition.pos->y == food.pos->y)
@@ -245,17 +243,17 @@ void Player::increasePlayerLength(int newX, int newY)
 
 bool Player::checkSelfCollision()
 {
-    if(playerPosList->getSize()>1)
-    {    
+    if (playerPosList->getSize() > 1)
+    {
         int headX = playerPosList->getHeadElement().pos->x;
         int headY = playerPosList->getHeadElement().pos->y;
 
         for (int i = 1; i < playerPosList->getSize(); i++)
         {
-            int bodyX=playerPosList->getElement(i).pos->x;
-            int bodyY=playerPosList->getElement(i).pos->y;
-            
-            if (headX==bodyX && headY==bodyY)
+            int bodyX = playerPosList->getElement(i).pos->x;
+            int bodyY = playerPosList->getElement(i).pos->y;
+
+            if (headX == bodyX && headY == bodyY)
             {
                 return true;
             }
@@ -266,7 +264,7 @@ bool Player::checkSelfCollision()
 
 void Player::applySpecialFoodEffect(char foodSymbol)
 {
-    switch(foodSymbol)
+    switch (foodSymbol)
     {
     case '?':
         mainGameMechsRef->incrementScore(10);

@@ -14,7 +14,7 @@ Food::Food()
 
 Food::~Food()
 {
-    delete foodBucket; // deallocates the space initialized at the end of the program 
+    delete foodBucket; // deallocates the space initialized at the end of the program
 }
 
 /*void Food::generateFood(objPosArrayList* snakeBody)
@@ -58,9 +58,9 @@ Food::~Food()
     }
     foodPos.setObjPos(randX, randY, 'o');
     MacUILib_printf("Debug: Food placed at [%d, %d]\n", randX, randY);
-}*/    
+}*/
 
-void Food::generateFood(objPosArrayList* snakeBody, int totalFoods)
+void Food::generateFood(objPosArrayList *snakeBody, int totalFoods)
 {
     // srand(time(0));
 
@@ -71,19 +71,19 @@ void Food::generateFood(objPosArrayList* snakeBody, int totalFoods)
     int randY;
     bool validPosition;
 
-    for(int i = 0; i < totalFoods; i++)
+    for (int i = 0; i < totalFoods; i++)
     {
         validPosition = false;
-        while(!validPosition)
+        while (!validPosition)
         {
             randX = (rand() % boardWidth) + 1;
             randY = (rand() % boardHeight) + 1;
 
             validPosition = true;
 
-            for(int j = 0; j < snakeBody->getSize(); j++)
+            for (int j = 0; j < snakeBody->getSize(); j++)
             {
-                if(snakeBody->getElement(i).pos->x == randX && snakeBody->getElement(i).pos->y == randY)
+                if (snakeBody->getElement(i).pos->x == randX && snakeBody->getElement(i).pos->y == randY)
                 {
                     validPosition = false;
                     break;
@@ -92,7 +92,7 @@ void Food::generateFood(objPosArrayList* snakeBody, int totalFoods)
         }
 
         char symbol;
-        if(i < 2) // first two foods in the bucket are special foods
+        if (i < 2) // first two foods in the bucket are special foods
         {
             symbol = '?'; // '?' to denote special foods, kinda like mario kart
         }
@@ -103,21 +103,21 @@ void Food::generateFood(objPosArrayList* snakeBody, int totalFoods)
 
         foodBucket->insertTail(objPos(randX, randY, symbol));
     }
-}    
+}
 
 /*objPos Food::getFoodPos() const
 {
     return foodPos;
 }*/
 
-objPosArrayList* Food::getFoodBucket() const
+objPosArrayList *Food::getFoodBucket() const
 {
     return foodBucket;
 }
 
 void Food::clearFood()
 {
-    while(foodBucket->getSize() > 0)
+    while (foodBucket->getSize() > 0)
     {
         foodBucket->removeHead();
     }

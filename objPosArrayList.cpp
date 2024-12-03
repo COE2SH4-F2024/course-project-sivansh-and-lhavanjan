@@ -18,10 +18,23 @@ objPosArrayList::objPosArrayList(const objPosArrayList &sList) // Copy construct
     arrayCapacity = sList.arrayCapacity;
     aList = new objPos[ARRAY_MAX_CAP];
 
-    for(int i = 0; i < listSize; i++)
+    for (int i = 0; i < listSize; i++)
     {
         aList[i] = sList.aList[i];
     }
+}
+
+objPosArrayList &objPosArrayList::operator=(const objPosArrayList &array)
+{
+    if (this != &array)
+    {
+        this->listSize = array.getSize();
+        for (int i = 0; i < this->listSize; i++)
+        {
+            this->aList[i] = array.aList[i];
+        }
+    }
+    return *this;
 }
 
 objPosArrayList::~objPosArrayList() // Destructor
@@ -36,13 +49,13 @@ int objPosArrayList::getSize() const
 
 void objPosArrayList::insertHead(objPos thisPos)
 {
-    if(listSize == arrayCapacity)
+    if (listSize == arrayCapacity)
     {
         MacUILib_printf("Array is full");
         resizeArray();
     }
 
-    for(int i = listSize; i > 0; i--)
+    for (int i = listSize; i > 0; i--)
     {
         aList[i] = aList[i - 1];
     }
@@ -53,7 +66,7 @@ void objPosArrayList::insertHead(objPos thisPos)
 
 void objPosArrayList::insertTail(objPos thisPos)
 {
-    if(listSize == arrayCapacity)
+    if (listSize == arrayCapacity)
     {
         MacUILib_printf("Array is full");
         resizeArray();
@@ -65,13 +78,13 @@ void objPosArrayList::insertTail(objPos thisPos)
 
 void objPosArrayList::removeHead()
 {
-    if(listSize == 0)
+    if (listSize == 0)
     {
         MacUILib_printf("List is empty");
         return;
     }
 
-    for(int i = 0; i < listSize - 1; i++)
+    for (int i = 0; i < listSize - 1; i++)
     {
         aList[i] = aList[i + 1];
     }
@@ -81,7 +94,7 @@ void objPosArrayList::removeHead()
 
 void objPosArrayList::removeTail()
 {
-    if(listSize == 0)
+    if (listSize == 0)
     {
         MacUILib_printf("List is empty");
         return;
@@ -102,7 +115,7 @@ objPos objPosArrayList::getTailElement() const
 
 objPos objPosArrayList::getElement(int index) const
 {
-    if(index < 0 || index >= listSize)
+    if (index < 0 || index >= listSize)
     {
         MacUILib_printf("Invalid index");
         return objPos();
@@ -115,9 +128,9 @@ void objPosArrayList::resizeArray()
 {
     int newCapacity = arrayCapacity * 2;
 
-    objPos* newArray = new objPos[newCapacity];
+    objPos *newArray = new objPos[newCapacity];
 
-    for(int i = 0; i < listSize; i++)
+    for (int i = 0; i < listSize; i++)
     {
         newArray[i] = aList[i];
     }

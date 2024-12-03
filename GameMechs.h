@@ -11,44 +11,46 @@ using namespace std;
 
 class GameMechs
 {
-    private:
-        char input;
-        bool exitFlag;
-        bool loseFlag;
-        int score;
+private:
+    char input;
+    bool exitFlag;
+    bool loseFlag;
+    int score;
 
-        int boardSizeX;
-        int boardSizeY;
+    int boardSizeX;
+    int boardSizeY;
 
-        objPos food;
+    objPos food;
 
-        int speed = 3;
-        int delayAmount = 100000;
+    int speed = 3;
+    int delayAmount = 100000;
 
-    public:
-        GameMechs();
-        GameMechs(int boardX, int boardY);
-        ~GameMechs(); // is this one needed at all? Why or why not?
-        
-        bool getExitFlagStatus() const; 
-        void setExitTrue();
-        bool getLoseFlagStatus() const;
-        void setLoseFlag();
+public:
+    GameMechs();
+    GameMechs(int boardX, int boardY);
+    ~GameMechs(); // is this one needed at all? Why or why not?
+    GameMechs(const GameMechs &game);
+    GameMechs &operator=(const GameMechs &game);
 
-        char getInput();
-        void setInput(char this_input);
-        void clearInput();
+    bool getExitFlagStatus() const;
+    void setExitTrue();
+    bool getLoseFlagStatus() const;
+    void setLoseFlag();
 
-        int getBoardSizeX() const;
-        int getBoardSizeY() const;
-        
-        int getScore() const;
-        void incrementScore(int amount);
-        // More methods should be added here
-        int getSpeed();
-        void setSpeed(int newSpeed);
-        int getDelayAmount();
-        void setDelayAmount(int amount);
+    char getInput();
+    void setInput(char this_input);
+    void clearInput();
+
+    int getBoardSizeX() const;
+    int getBoardSizeY() const;
+
+    int getScore() const;
+    void incrementScore(int amount);
+    // More methods should be added here
+    int getSpeed();
+    void setSpeed(int newSpeed);
+    int getDelayAmount();
+    void setDelayAmount(int amount);
 };
 
 #endif

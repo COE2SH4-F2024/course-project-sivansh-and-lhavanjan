@@ -23,10 +23,34 @@ GameMechs::GameMechs(int boardX, int boardY)
     boardSizeY = boardY;
 }
 
+GameMechs::GameMechs(const GameMechs &game)
+{
+    input = 0;
+    exitFlag = false;
+    loseFlag = false;
+    score = 0;
+
+    boardSizeX = 30;
+    boardSizeY = 15;
+}
+
+GameMechs &GameMechs::operator=(const GameMechs &game)
+{
+    if (this != &game)
+    {
+        this->boardSizeX = 30;
+        this->boardSizeY = 15;
+        this->input = 0;
+        this->exitFlag = false;
+        this->loseFlag = false;
+        this->score = 0;
+    }
+    return *this;
+}
+
 // do you need a destructor?
 GameMechs::~GameMechs()
 {
-    
 }
 
 bool GameMechs::getExitFlagStatus() const
@@ -38,11 +62,10 @@ bool GameMechs::getLoseFlagStatus() const
 {
     return loseFlag;
 }
-    
 
-char GameMechs::getInput() 
+char GameMechs::getInput()
 {
-    if(MacUILib_hasChar())
+    if (MacUILib_hasChar())
     {
         input = MacUILib_getChar();
     }
@@ -68,7 +91,6 @@ int GameMechs::getBoardSizeY() const
 {
     return boardSizeY;
 }
-
 
 void GameMechs::setExitTrue()
 {
@@ -97,7 +119,7 @@ int GameMechs::getSpeed()
 }
 void GameMechs::setSpeed(int newSpeed)
 {
-    if(newSpeed >= 1 && newSpeed <= 5)
+    if (newSpeed >= 1 && newSpeed <= 5)
     {
         speed = newSpeed;
     }

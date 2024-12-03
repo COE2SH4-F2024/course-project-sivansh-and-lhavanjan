@@ -14,35 +14,41 @@ class Player
 
     // You will include more data members and member functions to complete your design.
 
-    
-    public:
-        enum Dir {UP, DOWN, LEFT, RIGHT, STOP};  // This is the direction state
+public:
+    enum Dir
+    {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        STOP
+    }; // This is the direction state
 
-        Player(GameMechs* thisGMRef, Food* thisFoodRef, int initalLength);
-        ~Player();
+    Player(GameMechs *thisGMRef, Food *thisFoodRef, int initalLength);
+    ~Player();
 
-        Player(const Player& a); // copy constructor
-        Player& operator=(const Player& a); // copy assignment operator
+    Player(const Player &a);            // copy constructor
+    Player &operator=(const Player &a); // copy assignment operator
 
-        objPosArrayList* getPlayerPos() const; // Upgrade this in iteration 3.       
-        void updatePlayerDir();
-        void movePlayer();
+    objPosArrayList *getPlayerPos() const; // Upgrade this in iteration 3.
+    void updatePlayerDir();
+    void movePlayer();
 
-        // More methods to be added here
-        void speedControl();
-        
-        bool checkFoodConsumption(Food* foodRef);
-        void applySpecialFoodEffect(char foodSymbol);
-        void increasePlayerLength(int newX, int newY);
-        bool checkSelfCollision();
+    // More methods to be added here
+    void speedControl();
 
-    private:
-        objPosArrayList* playerPosList; // Upgrade this in iteration 3.    
-        enum Dir playerdirection;
+    bool checkFoodConsumption(Food *foodRef);
+    void applySpecialFoodEffect(char foodSymbol);
+    void increasePlayerLength(int newX, int newY);
+    bool checkSelfCollision();
 
-        // Need a reference to the Main Game Mechanisms
-        GameMechs* mainGameMechsRef;
-        Food* foodRef;
+private:
+    objPosArrayList *playerPosList; // Upgrade this in iteration 3.
+    enum Dir playerdirection;
+
+    // Need a reference to the Main Game Mechanisms
+    GameMechs *mainGameMechsRef;
+    Food *foodRef;
 };
 
 #endif
